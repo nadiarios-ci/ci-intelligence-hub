@@ -101,6 +101,7 @@ HEAD_CSS = """<!DOCTYPE html>
     .badge-tier-1 { background: #fde8e8; color: var(--red); }
     .badge-tier-2 { background: #fff3e0; color: var(--amber); }
     .badge-tier-3 { background: #f0f0f0; color: var(--gray); }
+    .badge-tier-4 { background: #e0f7f4; color: var(--teal); }
     .badge-Published { background: #e8f5e9; color: var(--green); }
     .badge-Review    { background: #fff3e0; color: var(--amber); }
     .badge-Draft     { background: #f0f0f0; color: var(--gray); }
@@ -264,6 +265,7 @@ HTML_BODY = """
           <button class="pill" data-val="1">Tier 1</button>
           <button class="pill" data-val="2">Tier 2</button>
           <button class="pill" data-val="3">Tier 3</button>
+          <button class="pill" data-val="4">Watch List</button>
         </div>
       </div>
       <div class="filter-divider"></div>
@@ -479,7 +481,8 @@ function renderBattlecards() {
   const empty = document.getElementById('bc-empty');
   document.getElementById('bc-count').innerHTML = `Showing <strong>${list.length}</strong> of ${BATTLECARDS.length}`;
   grid.innerHTML = list.map(bc => {
-    const tierBadge = bc.tier ? `<span class="badge badge-tier-${bc.tier}">Tier ${bc.tier}</span>` : '';
+    const tierLabel = bc.tier === 4 ? 'Watch List' : `Tier ${bc.tier}`;
+    const tierBadge = bc.tier ? `<span class="badge badge-tier-${bc.tier}">${tierLabel}</span>` : '';
     const docBtn    = bc.doc
       ? `<a href="${bc.doc}" target="_blank" class="btn btn-primary">${SVG.doc} Google Doc</a>`
       : `<span class="btn btn-primary disabled">${SVG.doc} Pending</span>`;
@@ -640,20 +643,20 @@ const BATTLECARDS = [
   {id:'BC-004',type:'Segment',title:'People Transportation',tier:null,presence:[],logo:'geotab.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/69818/',doc:'https://docs.google.com/document/d/1BbDy63ZKFeSk8xrxLW9sOqC7NHT9HZUq9U_ISO3_dxg/edit'},
   {id:'BC-005',type:'Competitor',title:'Samsara',tier:1,presence:['Global'],logo:'samsara.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68627/',doc:'https://docs.google.com/document/d/1cNZdYzGFEHJVBVMgJPqC23_gDHm3qtuqOnvxND7IH_8/edit'},
   {id:'BC-006',type:'Competitor',title:'Motive',tier:1,presence:['North America'],logo:'gomotive.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67615/',doc:'https://docs.google.com/document/d/1o6kUwI0UjJsPJ8yYnKmsPp1_FG1vv_Ef4DKoYYhxAkk/edit'},
-  {id:'BC-007',type:'Competitor',title:'Azuga',tier:1,presence:['North America'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68014/',doc:'https://docs.google.com/document/d/1HZRCHE7c-c5o9HYxjXODa2JphUYlu7MaI3YiMOtnsEc/edit'},
-  {id:'BC-008',type:'Competitor',title:'Webfleet',tier:1,presence:['Europe','Global'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67946/',doc:'https://docs.google.com/document/d/1XwOPMfuSdhX5De93qMgX8wqEB0T4StT1leFVhoNK9EQ/edit'},
+  {id:'BC-007',type:'Competitor',title:'Azuga',tier:3,presence:['North America'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68014/',doc:'https://docs.google.com/document/d/1HZRCHE7c-c5o9HYxjXODa2JphUYlu7MaI3YiMOtnsEc/edit'},
+  {id:'BC-008',type:'Competitor',title:'Webfleet',tier:2,presence:['Europe','Global'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67946/',doc:'https://docs.google.com/document/d/1XwOPMfuSdhX5De93qMgX8wqEB0T4StT1leFVhoNK9EQ/edit'},
   {id:'BC-009',type:'Competitor',title:'PowerFleet',tier:2,presence:['Global'],logo:'powerfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67938/',doc:'https://docs.google.com/document/d/1V8VdL4bFJ5QU3j5AGZH-zlcp0P8lCCJXYG3MqAeybO0/edit'},
-  {id:'BC-010',type:'Competitor',title:'Targa Telematics',tier:2,presence:['Europe'],logo:'targatelematics.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68013/',doc:'https://docs.google.com/document/d/1NgLMMacLUatEWr9GGoQdFN2w1c6vd1TT15BEs7NrBpo/edit'},
-  {id:'BC-011',type:'Competitor',title:'Verizon Connect',tier:1,presence:['North America'],logo:'verizonconnect.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68609/',doc:'https://docs.google.com/document/d/1qu5ZG81IeSfM7Q2shK2OisyQCIf2sTH_M8JFvr-1e9k/edit'},
-  {id:'BC-012',type:'Competitor',title:'Solera',tier:2,presence:['Global'],logo:'solera.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68282/',doc:'https://docs.google.com/document/d/1sXTj7ubagBzTrf5odAQsDgc_T2iECKD4BQTwHw42zjM/edit'},
+  {id:'BC-010',type:'Competitor',title:'Targa Telematics',tier:4,presence:['Europe'],logo:'targatelematics.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68013/',doc:'https://docs.google.com/document/d/1NgLMMacLUatEWr9GGoQdFN2w1c6vd1TT15BEs7NrBpo/edit'},
+  {id:'BC-011',type:'Competitor',title:'Verizon Connect',tier:4,presence:['North America'],logo:'verizonconnect.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68609/',doc:'https://docs.google.com/document/d/1qu5ZG81IeSfM7Q2shK2OisyQCIf2sTH_M8JFvr-1e9k/edit'},
+  {id:'BC-012',type:'Competitor',title:'Solera',tier:4,presence:['Global'],logo:'solera.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68282/',doc:'https://docs.google.com/document/d/1sXTj7ubagBzTrf5odAQsDgc_T2iECKD4BQTwHw42zjM/edit'},
   {id:'BC-013',type:'Competitor',title:'Platform Science',tier:3,presence:['North America'],logo:'platformscience.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67931/',doc:'https://docs.google.com/document/d/1sT5374e9Ia9GvdzCQVvOd3bkohqfqNL6QxKcvcM7NzU/edit'},
   {id:'BC-014',type:'Competitor',title:'MotorQ',tier:3,presence:['North America'],logo:'motorq.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68437/',doc:'https://docs.google.com/document/d/1XmxJf7XgQp8dnhYuP5PuF3a3s6eMxr5ioN8frmbmiyI/edit'},
-  {id:'BC-015',type:'Competitor',title:'Michelin Connected Fleet',tier:2,presence:['Europe','Global'],logo:'michelin.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70092/',doc:'https://docs.google.com/document/d/1zeC-EpRyCECWiz6H7HR_posCU1gq_dOL1c7QgQpfXUE/edit'},
+  {id:'BC-015',type:'Competitor',title:'Michelin Connected Fleet',tier:3,presence:['Europe','Global'],logo:'michelin.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70092/',doc:'https://docs.google.com/document/d/1zeC-EpRyCECWiz6H7HR_posCU1gq_dOL1c7QgQpfXUE/edit'},
   {id:'BC-016',type:'Hispam',title:'Samsara (Hispam)',tier:1,presence:['LATAM'],logo:'samsara.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70599/',doc:''},
   {id:'BC-017',type:'Hispam',title:'Motive (Hispam)',tier:1,presence:['LATAM'],logo:'gomotive.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70594/',doc:''},
-  {id:'BC-018',type:'Hispam',title:'Azuga (Hispam)',tier:1,presence:['LATAM'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70579/',doc:''},
-  {id:'BC-019',type:'Hispam',title:'Solera (Hispam)',tier:2,presence:['LATAM'],logo:'solera.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70600/',doc:''},
-  {id:'BC-020',type:'Hispam',title:'Webfleet (Hispam)',tier:1,presence:['LATAM'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70601/',doc:''},
+  {id:'BC-018',type:'Hispam',title:'Azuga (Hispam)',tier:3,presence:['LATAM'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70579/',doc:''},
+  {id:'BC-019',type:'Hispam',title:'Solera (Hispam)',tier:4,presence:['LATAM'],logo:'solera.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70600/',doc:''},
+  {id:'BC-020',type:'Hispam',title:'Webfleet (Hispam)',tier:2,presence:['LATAM'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70601/',doc:''},
 ];
 
 const NEWSLETTERS = [
