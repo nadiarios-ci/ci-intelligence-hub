@@ -53,7 +53,7 @@ HEAD_CSS = """<!DOCTYPE html>
     .tab-nav { display: flex; border-top: 1px solid rgba(255,255,255,0.1); overflow-x: auto; }
     .tab-btn { flex: 1; min-width: 140px; padding: 10px 20px; background: none; border: none; border-bottom: 3px solid transparent; color: rgba(255,255,255,0.6); font-family: 'Roboto', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s; white-space: nowrap; }
     .tab-btn:hover { color: white; background: rgba(255,255,255,0.07); }
-    .tab-btn.active { color: white; border-bottom-color: #7ec8f5; }
+    .tab-btn.active { color: white; border-bottom-color: var(--tab-accent, #7ec8f5); }
     .tab-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 
     /* ── Filter Bar ── */
@@ -71,6 +71,14 @@ HEAD_CSS = """<!DOCTYPE html>
     .pill:hover { border-color: var(--blue); color: var(--blue); }
     .pill.active { background: var(--navy); border-color: var(--navy); color: white; }
     .filter-divider { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+
+    /* ── Type Sub-tabs (Battlecards) ── */
+    .type-subtabs { display: flex; background: #f4f6f9; border-bottom: 1px solid var(--border); margin: -12px -24px 12px; }
+    .type-subtab { flex: 1; min-width: 0; padding: 9px 10px; background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -1px; color: var(--muted); font-family: 'Roboto', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; white-space: nowrap; }
+    .type-subtab:hover { color: var(--stab-color, var(--navy)); background: var(--stab-bg, #e8edf5); }
+    .type-subtab.active { color: var(--stab-color, var(--navy)); border-bottom-color: var(--stab-color, var(--navy)); background: white; font-weight: 700; }
+    .stab-badge { font-size: 10px; background: var(--stab-bg, #e8edf5); color: var(--stab-color, var(--navy)); padding: 1px 6px; border-radius: 10px; font-weight: 700; line-height: 1.5; }
+    .type-subtab.active .stab-badge { background: var(--stab-color, var(--navy)); color: white; }
     .result-count { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
     .result-count strong { color: var(--navy); }
 
@@ -166,6 +174,25 @@ HEAD_CSS = """<!DOCTYPE html>
     .cw-topic-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
     .cw-card-footer { padding: 10px 16px; border-top: 1px solid var(--border); }
 
+    /* ── QBR Reports ── */
+    .qbr-year-group { margin-bottom: 32px; }
+    .qbr-year-header { font-size: 13px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+    .qbr-list { display: flex; flex-direction: column; gap: 10px; }
+    .qbr-card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px; padding: 14px 16px; transition: box-shadow 0.2s, transform 0.2s; border-left: 4px solid var(--navy); }
+    .qbr-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .qbr-card-icon { width: 40px; height: 40px; border-radius: 8px; background: #e8edf5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--navy); }
+    .qbr-card-info { flex: 1; min-width: 0; }
+    .qbr-card-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .qbr-card-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .qbr-quarter-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; background: #e8edf5; color: var(--navy); text-transform: uppercase; letter-spacing: 0.4px; margin-right: 6px; }
+
+    /* ── Competitor Pulse ── */
+    .pulse-page { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 24px; text-align: center; }
+    .pulse-icon { width: 72px; height: 72px; background: linear-gradient(135deg, #1a3660, #25477a); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: white; }
+    .pulse-title { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .pulse-desc { font-size: 14px; color: var(--muted); max-width: 440px; margin-bottom: 28px; line-height: 1.6; }
+    .btn-launch { padding: 12px 32px; font-size: 14px; font-weight: 600; border-radius: 8px; }
+
     /* ── Buttons ── */
     .btn { flex: 1; padding: 7px 10px; border-radius: 6px; font-size: 11px; font-weight: 500; font-family: 'Roboto', sans-serif; text-align: center; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; transition: all 0.15s; border: none; }
     .btn-primary { background: var(--navy); color: white; }
@@ -219,21 +246,29 @@ HTML_BODY = """
     </div>
   </div>
   <nav class="tab-nav">
-    <button class="tab-btn active" data-tab="battlecards">
+    <button class="tab-btn active" data-tab="battlecards" style="--tab-accent:#7ec8f5">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7v5c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7L12 2z"/><polyline points="9 12 11 14 15 10"/></svg>
       Battlecards
     </button>
-    <button class="tab-btn" data-tab="reports">
+    <button class="tab-btn" data-tab="reports" style="--tab-accent:#81c784">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="8" y2="17"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="16" y1="14" x2="16" y2="17"/></svg>
       Industry Reports
     </button>
-    <button class="tab-btn" data-tab="newsletters">
+    <button class="tab-btn" data-tab="newsletters" style="--tab-accent:#ffb74d">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Newsletters
     </button>
-    <button class="tab-btn" data-tab="watch">
+    <button class="tab-btn" data-tab="watch" style="--tab-accent:#ba68c8">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
       Competitive Watch
+    </button>
+    <button class="tab-btn" data-tab="pulse" style="--tab-accent:#4db6ac">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Competitor Pulse
+    </button>
+    <button class="tab-btn" data-tab="qbr" style="--tab-accent:#f48fb1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Quarterly Reports
     </button>
   </nav>
 </header>
@@ -241,21 +276,27 @@ HTML_BODY = """
 <!-- ══ BATTLECARDS SECTION ══ -->
 <div class="section active" id="sec-battlecards">
   <div class="filter-bar">
+    <div class="type-subtabs" id="bc-type-subtabs">
+      <button class="type-subtab active" data-val="all" style="--stab-color:#25477a;--stab-bg:#e8edf5">
+        All <span class="stab-badge">20</span>
+      </button>
+      <button class="type-subtab" data-val="Competitor" style="--stab-color:#25477a;--stab-bg:#e8edf5">
+        Competitors <span class="stab-badge">11</span>
+      </button>
+      <button class="type-subtab" data-val="Product" style="--stab-color:#006994;--stab-bg:#e0f4fb">
+        Products <span class="stab-badge">3</span>
+      </button>
+      <button class="type-subtab" data-val="Segment" style="--stab-color:#0078d3;--stab-bg:#e3f0fb">
+        Segments <span class="stab-badge">1</span>
+      </button>
+      <button class="type-subtab" data-val="Hispam" style="--stab-color:#6b2d8b;--stab-bg:#f3eafa">
+        ES·HISPAM <span class="stab-badge">5</span>
+      </button>
+    </div>
     <div class="filter-inner">
       <div class="search-wrap">
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" id="bc-search" class="search-input" placeholder="Search battlecards…" autocomplete="off" />
-      </div>
-      <div class="filter-divider"></div>
-      <div class="filter-group">
-        <span class="filter-label">Type</span>
-        <div class="pills" id="bc-type-pills">
-          <button class="pill active" data-val="all">All</button>
-          <button class="pill" data-val="Competitor">Competitor</button>
-          <button class="pill" data-val="Product">Product</button>
-          <button class="pill" data-val="Segment">Segment</button>
-          <button class="pill" data-val="Hispam">ES-HISPAM</button>
-        </div>
       </div>
       <div class="filter-divider"></div>
       <div class="filter-group" id="bc-tier-group">
@@ -377,6 +418,30 @@ HTML_BODY = """
     </div>
   </div>
   <main><div class="cards-grid" id="cw-grid"></div></main>
+</div>
+
+<!-- ══ COMPETITOR PULSE SECTION ══ -->
+<div class="section" id="sec-pulse">
+  <main>
+    <div class="pulse-page">
+      <div class="pulse-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="pulse-title">Competitor Pulse Dashboard</div>
+      <div class="pulse-desc">Real-time competitor monitoring dashboard tracking signals, news, and market movements across Geotab's key competitors.</div>
+      <a href="https://script.google.com/a/macros/geotab.com/s/AKfycbwiaUZkIOIhqOSkq53Qkut47VfYy1f99LeQoxEEEYUUefeWYNSMa7X6vo6lUmE-cNVoVg/exec" target="_blank" class="btn btn-primary btn-launch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Launch Dashboard
+      </a>
+    </div>
+  </main>
+</div>
+
+<!-- ══ QUARTERLY REPORTS SECTION ══ -->
+<div class="section" id="sec-qbr">
+  <main>
+    <div id="qbr-container"></div>
+  </main>
 </div>
 
 <!-- ══ FOOTER ══ -->
@@ -606,9 +671,41 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
+// ── Render: QBR Reports ──────────────────────────────────────────────────────
+function renderQBR() {
+  const years = [...new Set(QBR_REPORTS.map(r => r.year))].sort((a,b) => b-a);
+  const docIcon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  document.getElementById('qbr-container').innerHTML = years.map(yr => {
+    const reports = QBR_REPORTS.filter(r => r.year === yr);
+    return `<div class="qbr-year-group">
+      <div class="qbr-year-header">${yr}</div>
+      <div class="qbr-list">${reports.map(r => `
+        <div class="qbr-card">
+          <div class="qbr-card-icon">${docIcon}</div>
+          <div class="qbr-card-info">
+            <div class="qbr-card-title">${r.title}</div>
+            <div class="qbr-card-meta"><span class="qbr-quarter-badge">${r.quarter} ${r.year}</span> CI/MI Team · Geotab</div>
+          </div>
+          <a href="${r.url}" target="_blank" class="btn btn-primary" style="flex:0 0 auto;padding:7px 14px;font-size:12px">${SVG.link} Open</a>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
 // ── Filter listeners ─────────────────────────────────────────────────────────
 document.getElementById('bc-search').addEventListener('input', e => { STATE.bc.search = e.target.value; renderBattlecards(); });
 document.getElementById('rpt-search').addEventListener('input', e => { STATE.rpt.search = e.target.value; renderReports(); });
+
+// Type sub-tabs listener (replaces old bc-type-pills)
+document.getElementById('bc-type-subtabs').addEventListener('click', e => {
+  const tab = e.target.closest('.type-subtab');
+  if (!tab) return;
+  document.querySelectorAll('#bc-type-subtabs .type-subtab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  STATE.bc.type = tab.dataset.val;
+  renderBattlecards();
+});
 
 function pillListener(groupId, stateKey, stateObj, renderFn) {
   document.getElementById(groupId).addEventListener('click', e => {
@@ -620,7 +717,6 @@ function pillListener(groupId, stateKey, stateObj, renderFn) {
     renderFn();
   });
 }
-pillListener('bc-type-pills',    'type',   STATE.bc,  renderBattlecards);
 pillListener('bc-tier-pills',    'tier',   STATE.bc,  renderBattlecards);
 pillListener('bc-region-pills',  'region', STATE.bc,  renderBattlecards);
 pillListener('rpt-cat-pills',    'cat',    STATE.rpt, renderReports);
@@ -634,29 +730,37 @@ renderBattlecards();
 renderReports();
 renderNewsletters();
 renderWatch();
+renderQBR();
 </script>"""
 DATA_ARRAYS = """
 const BATTLECARDS = [
+  // Products
   {id:'BC-001',type:'Product',title:'Asset Tracker',tier:null,presence:[],logo:'geotab.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/69117/',doc:'https://docs.google.com/presentation/d/1bFuUqqxoI-W-mS0U59miRW2oucLkdYYQGt1pUcqebUs/edit'},
   {id:'BC-002',type:'Product',title:'GO Focus Family',tier:null,presence:[],logo:'geotab.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/69309/',doc:'https://docs.google.com/document/d/1f1mmB8iY-IzonnaIqZsukI3CvLgp1Fqn_hqaKsA7wnE/edit'},
   {id:'BC-003',type:'Product',title:'GO Devices',tier:null,presence:[],logo:'geotab.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70693/',doc:'https://docs.google.com/presentation/d/1K7nGtWQLw6l718fjxRU1SlCqyjnmORUT8g-6UElN5qQ/edit'},
+  // Segments
   {id:'BC-004',type:'Segment',title:'People Transportation',tier:null,presence:[],logo:'geotab.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/69818/',doc:'https://docs.google.com/document/d/1BbDy63ZKFeSk8xrxLW9sOqC7NHT9HZUq9U_ISO3_dxg/edit'},
+  // Competitors — Tier 1
   {id:'BC-005',type:'Competitor',title:'Samsara',tier:1,presence:['Global'],logo:'samsara.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68627/',doc:'https://docs.google.com/document/d/1cNZdYzGFEHJVBVMgJPqC23_gDHm3qtuqOnvxND7IH_8/edit'},
   {id:'BC-006',type:'Competitor',title:'Motive',tier:1,presence:['North America'],logo:'gomotive.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67615/',doc:'https://docs.google.com/document/d/1o6kUwI0UjJsPJ8yYnKmsPp1_FG1vv_Ef4DKoYYhxAkk/edit'},
-  {id:'BC-007',type:'Competitor',title:'Azuga',tier:3,presence:['North America'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68014/',doc:'https://docs.google.com/document/d/1HZRCHE7c-c5o9HYxjXODa2JphUYlu7MaI3YiMOtnsEc/edit'},
-  {id:'BC-008',type:'Competitor',title:'Webfleet',tier:2,presence:['Europe','Global'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67946/',doc:'https://docs.google.com/document/d/1XwOPMfuSdhX5De93qMgX8wqEB0T4StT1leFVhoNK9EQ/edit'},
+  // Competitors — Tier 2
   {id:'BC-009',type:'Competitor',title:'PowerFleet',tier:2,presence:['Global'],logo:'powerfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67938/',doc:'https://docs.google.com/document/d/1V8VdL4bFJ5QU3j5AGZH-zlcp0P8lCCJXYG3MqAeybO0/edit'},
+  {id:'BC-008',type:'Competitor',title:'Webfleet',tier:2,presence:['Europe','Global'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67946/',doc:'https://docs.google.com/document/d/1XwOPMfuSdhX5De93qMgX8wqEB0T4StT1leFVhoNK9EQ/edit'},
+  // Competitors — Tier 3
+  {id:'BC-013',type:'Competitor',title:'Platform Science',tier:3,presence:['North America'],logo:'platformscience.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67931/',doc:'https://docs.google.com/document/d/1sT5374e9Ia9GvdzCQVvOd3bkohqfqNL6QxKcvcM7NzU/edit'},
+  {id:'BC-014',type:'Competitor',title:'MotorQ',tier:3,presence:['North America'],logo:'motorq.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68437/',doc:'https://docs.google.com/document/d/1XmxJf7XgQp8dnhYuP5PuF3a3s6eMxr5ioN8frmbmiyI/edit'},
+  {id:'BC-007',type:'Competitor',title:'Azuga',tier:3,presence:['North America'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68014/',doc:'https://docs.google.com/document/d/1HZRCHE7c-c5o9HYxjXODa2JphUYlu7MaI3YiMOtnsEc/edit'},
+  {id:'BC-015',type:'Competitor',title:'Michelin Connected Fleet',tier:3,presence:['Europe','Global'],logo:'michelin.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70092/',doc:'https://docs.google.com/document/d/1zeC-EpRyCECWiz6H7HR_posCU1gq_dOL1c7QgQpfXUE/edit'},
+  // Competitors — Watch List (Tier 4)
   {id:'BC-010',type:'Competitor',title:'Targa Telematics',tier:4,presence:['Europe'],logo:'targatelematics.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68013/',doc:'https://docs.google.com/document/d/1NgLMMacLUatEWr9GGoQdFN2w1c6vd1TT15BEs7NrBpo/edit'},
   {id:'BC-011',type:'Competitor',title:'Verizon Connect',tier:4,presence:['North America'],logo:'verizonconnect.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68609/',doc:'https://docs.google.com/document/d/1qu5ZG81IeSfM7Q2shK2OisyQCIf2sTH_M8JFvr-1e9k/edit'},
   {id:'BC-012',type:'Competitor',title:'Solera',tier:4,presence:['Global'],logo:'solera.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68282/',doc:'https://docs.google.com/document/d/1sXTj7ubagBzTrf5odAQsDgc_T2iECKD4BQTwHw42zjM/edit'},
-  {id:'BC-013',type:'Competitor',title:'Platform Science',tier:3,presence:['North America'],logo:'platformscience.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/67931/',doc:'https://docs.google.com/document/d/1sT5374e9Ia9GvdzCQVvOd3bkohqfqNL6QxKcvcM7NzU/edit'},
-  {id:'BC-014',type:'Competitor',title:'MotorQ',tier:3,presence:['North America'],logo:'motorq.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/68437/',doc:'https://docs.google.com/document/d/1XmxJf7XgQp8dnhYuP5PuF3a3s6eMxr5ioN8frmbmiyI/edit'},
-  {id:'BC-015',type:'Competitor',title:'Michelin Connected Fleet',tier:3,presence:['Europe','Global'],logo:'michelin.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70092/',doc:'https://docs.google.com/document/d/1zeC-EpRyCECWiz6H7HR_posCU1gq_dOL1c7QgQpfXUE/edit'},
+  // Hispam (same competitor order)
   {id:'BC-016',type:'Hispam',title:'Samsara (Hispam)',tier:1,presence:['LATAM'],logo:'samsara.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70599/',doc:''},
   {id:'BC-017',type:'Hispam',title:'Motive (Hispam)',tier:1,presence:['LATAM'],logo:'gomotive.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70594/',doc:''},
+  {id:'BC-020',type:'Hispam',title:'Webfleet (Hispam)',tier:2,presence:['LATAM'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70601/',doc:''},
   {id:'BC-018',type:'Hispam',title:'Azuga (Hispam)',tier:3,presence:['LATAM'],logo:'azuga.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70579/',doc:''},
   {id:'BC-019',type:'Hispam',title:'Solera (Hispam)',tier:4,presence:['LATAM'],logo:'solera.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70600/',doc:''},
-  {id:'BC-020',type:'Hispam',title:'Webfleet (Hispam)',tier:2,presence:['LATAM'],logo:'webfleet.com',status:'Published',updated:'Apr 2026',crayon:'https://app.crayon.co/intel/geotab/battlecard/70601/',doc:''},
 ];
 
 const NEWSLETTERS = [
@@ -780,6 +884,19 @@ const REPORTS = [
   {id:'RPT-094',cat:'Emerging Trends',publisher:'ABI Research',pubDomain:'abiresearch.com',region:'Global',year:2024,title:'Connected Commercial Vehicles Market Tracker - 2Q 2024',url:'https://docs.google.com/spreadsheets/d/1pdkgdv0iJhjMb6rcv4Y26zNRKhJCx_TlVvLTi8_f331LE/edit',tags:['Connected Commercial','Market Tracker','2024']},
   {id:'RPT-095',cat:'Emerging Trends',publisher:'ABI Research',pubDomain:'abiresearch.com',region:'Global',year:2024,title:'Connected Car Telematics Market Data Overview - 3Q 2024',url:'https://docs.google.com/presentation/d/1zl2GlNcdu-qfveNZEzjBdwZk5fvscD4M_uKfvhA83qI/edit',tags:['Connected Car','Market Overview','2024']},
   {id:'RPT-096',cat:'Emerging Trends',publisher:'ABI Research',pubDomain:'abiresearch.com',region:'Global',year:2024,title:'Connected Car - 1Q 2024 Market Tracker',url:'https://docs.google.com/spreadsheets/d/1byp_4L2Z1Ndtcl7ZwMXV_1sYPNtWzK7XmXxCT0_vDWk/edit',tags:['Connected Car','Market Tracker','Q1 2024']},
+];
+
+const QBR_REPORTS = [
+  // 2025
+  {id:'QBR-2025-Q4',quarter:'Q4',year:2025,title:'Q4 2025 Competitive Intelligence Report',url:'https://docs.google.com/document/d/1h_ckF3b2ZWpkGce0NBHYH-FDguLObbbY94QsMvJkpLQ/edit'},
+  {id:'QBR-2025-Q3',quarter:'Q3',year:2025,title:'Q3 2025 Competitive Intelligence Report',url:'https://docs.google.com/document/d/1k63NhKtdKB81uDIDNLZv1j1CU4otRAtw_vrrNrTP3dc/edit'},
+  {id:'QBR-2025-Q2',quarter:'Q2',year:2025,title:'Q2 2025 Quarterly Competitive Intelligence Report',url:'https://docs.google.com/document/d/1HuglhjDE7xnzO5YF6Z6DJBr-L4exyJnBUOM7aWKzRM0/edit'},
+  {id:'QBR-2025-Q1',quarter:'Q1',year:2025,title:'Q1 2025 Competitive Intelligence Report',url:'https://docs.google.com/document/d/1vSO2MN77n_FUYjxmnIIEtn26xuJuFjlNQkcaJ84YM_Q/edit'},
+  // 2024
+  {id:'QBR-2024-Q4',quarter:'Q4',year:2024,title:'Q4 2024 Market and Competitive Intelligence Report',url:'https://docs.google.com/document/d/1Gr7Cdx_UkGb4A5Gyb63yCzDDEz1hrq5QV47LCw1tKtA/edit'},
+  {id:'QBR-2024-Q3',quarter:'Q3',year:2024,title:'Q3 2024 Competitive Intelligence Report',url:'https://docs.google.com/document/d/1SIkrozCEgBu4pXfMDzMdqGAapIFGWHEevHwgHkIfJdY/edit'},
+  {id:'QBR-2024-Q2',quarter:'Q2',year:2024,title:'Q2 2024 Competitive Intelligence Report',url:'https://docs.google.com/document/d/14jfdtJBTorRb7hdvrKI4S6-AmpT4GC89S1501IxNViA/edit'},
+  {id:'QBR-2024-Q1',quarter:'Q1',year:2024,title:'Q1 2024 Competitive Intelligence Report',url:'https://docs.google.com/document/d/1BxFoi4NbuRi8JPIQMmt7_eV-pMiAUjXMjKjbPM1Tcls/edit'},
 ];
 </script>"""
 
