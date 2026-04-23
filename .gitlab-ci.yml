@@ -1,5 +1,7 @@
 pages:
   stage: deploy
+  tags:
+    - prod-docker-autoscaler-runner
   script:
     - mkdir -p public
     - cp index.html public/index.html
