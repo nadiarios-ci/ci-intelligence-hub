@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Circle ring: primary blue -->
+  <circle cx="12" cy="12" r="9" stroke="#0078d3" stroke-width="1.6"/>
+  <!-- Lightning bolt: navy detail -->
+  <polyline points="13.5 6.5 9 13 12.5 13 10.5 17.5" stroke="#25477a" stroke-width="1.9"/>
+</svg>

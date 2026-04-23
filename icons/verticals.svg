@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <!-- City buildings: primary blue -->
+  <rect x="2" y="7" width="7" height="15" stroke="#0078d3" stroke-width="1.6"/>
+  <rect x="9" y="2" width="6" height="20" stroke="#0078d3" stroke-width="1.6"/>
+  <rect x="15" y="11" width="7" height="11" stroke="#0078d3" stroke-width="1.6"/>
+  <!-- Ground line: navy detail -->
+  <line x1="1" y1="22" x2="23" y2="22" stroke="#25477a" stroke-width="2"/>
+</svg>
